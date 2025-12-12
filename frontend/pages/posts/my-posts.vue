@@ -120,7 +120,9 @@ const getStatusBadgeClass = (status: string) => {
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {{ new Date(post.created_at).toLocaleDateString() }}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
                   <NuxtLink
                     :to="`/posts/${post.slug}`"
                     class="text-blue-600 hover:text-blue-900 mr-4"

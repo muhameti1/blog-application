@@ -27,7 +27,8 @@ onMounted(async () => {
     form.title = post.value.title;
     form.content = post.value.content;
     form.excerpt = post.value.excerpt || "";
-    form.status = post.value.status === "approved" ? "pending" : post.value.status;
+    form.status =
+      post.value.status === "approved" ? "pending" : post.value.status;
   } catch (err: any) {
     error.value = err.data?.message || "Failed to load post";
   } finally {
@@ -104,7 +105,10 @@ const handleDelete = async () => {
         </div>
 
         <form @submit.prevent="handleSubmit" class="space-y-6">
-          <div v-if="error" class="bg-red-50 border border-red-200 rounded-md p-4">
+          <div
+            v-if="error"
+            class="bg-red-50 border border-red-200 rounded-md p-4"
+          >
             <p class="text-sm text-red-600">{{ error }}</p>
           </div>
 
@@ -123,7 +127,10 @@ const handleDelete = async () => {
           </div>
 
           <div>
-            <label for="excerpt" class="block text-sm font-medium text-gray-700">
+            <label
+              for="excerpt"
+              class="block text-sm font-medium text-gray-700"
+            >
               Excerpt (Optional)
             </label>
             <textarea
@@ -136,7 +143,10 @@ const handleDelete = async () => {
           </div>
 
           <div>
-            <label for="content" class="block text-sm font-medium text-gray-700">
+            <label
+              for="content"
+              class="block text-sm font-medium text-gray-700"
+            >
               Content
             </label>
             <textarea

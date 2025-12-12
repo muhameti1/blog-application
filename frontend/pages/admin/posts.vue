@@ -112,7 +112,10 @@ const draftPosts = computed(() =>
       </div>
 
       <div v-else>
-        <div v-if="error" class="mb-6 bg-red-50 border border-red-200 rounded-md p-4">
+        <div
+          v-if="error"
+          class="mb-6 bg-red-50 border border-red-200 rounded-md p-4"
+        >
           <p class="text-sm text-red-600">{{ error }}</p>
         </div>
 
@@ -154,38 +157,59 @@ const draftPosts = computed(() =>
               <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                   <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                    >
                       Title
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                    >
                       Author
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                    >
                       Created
                     </th>
-                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                    <th
+                      class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase"
+                    >
                       Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="post in pendingPosts" :key="post.id" class="hover:bg-gray-50">
+                  <tr
+                    v-for="post in pendingPosts"
+                    :key="post.id"
+                    class="hover:bg-gray-50"
+                  >
                     <td class="px-6 py-4">
                       <div class="text-sm font-medium text-gray-900">
                         {{ post.title }}
                       </div>
-                      <div v-if="post.excerpt" class="text-sm text-gray-500 mt-1">
+                      <div
+                        v-if="post.excerpt"
+                        class="text-sm text-gray-500 mt-1"
+                      >
                         {{ post.excerpt.substring(0, 80)
                         }}{{ post.excerpt.length > 80 ? "..." : "" }}
                       </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    >
                       {{ post.author?.name || "Unknown" }}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    >
                       {{ new Date(post.created_at).toLocaleDateString() }}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2"
+                    >
                       <NuxtLink
                         :to="`/posts/${post.slug}`"
                         class="text-blue-600 hover:text-blue-900"
@@ -224,31 +248,47 @@ const draftPosts = computed(() =>
               <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                   <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                    >
                       Title
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                    >
                       Author
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                    >
                       Status
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                    >
                       Created
                     </th>
-                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                    <th
+                      class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase"
+                    >
                       Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="post in posts" :key="post.id" class="hover:bg-gray-50">
+                  <tr
+                    v-for="post in posts"
+                    :key="post.id"
+                    class="hover:bg-gray-50"
+                  >
                     <td class="px-6 py-4">
                       <div class="text-sm font-medium text-gray-900">
                         {{ post.title }}
                       </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    >
                       {{ post.author?.name || "Unknown" }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
@@ -259,10 +299,14 @@ const draftPosts = computed(() =>
                         {{ post.status }}
                       </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    >
                       {{ new Date(post.created_at).toLocaleDateString() }}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                    >
                       <NuxtLink
                         :to="`/posts/${post.slug}`"
                         class="text-blue-600 hover:text-blue-900"
