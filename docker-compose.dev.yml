@@ -1,0 +1,31 @@
+# Docker Compose override for development
+# This file extends docker-compose.yml for development purposes
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  backend:
+    volumes:
+      - ./backend:/var/www/html
+      - backend_vendor:/var/www/html/vendor
+    environment:
+      APP_ENV: local
+      APP_DEBUG: true
+
+  frontend:
+    build:
+      context: ./frontend
+      target: development
+    command: npm run dev -- --host 0.0.0.0
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    environment:
+      NODE_ENV: development
+      NUXT_HOST: 0.0.0.0
+      NUXT_PORT: 3000
+
+volumes:
+  backend_vendor:
+    driver: local
+  frontend_node_modules:
+    driver: local
