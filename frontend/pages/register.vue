@@ -1,5 +1,7 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div
+    class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
+  >
     <div class="max-w-md w-full space-y-8">
       <div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -7,7 +9,10 @@
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600">
           Or
-          <NuxtLink to="/login" class="font-medium text-indigo-600 hover:text-indigo-500">
+          <NuxtLink
+            to="/login"
+            class="font-medium text-indigo-600 hover:text-indigo-500"
+          >
             sign in to your existing account
           </NuxtLink>
         </p>
@@ -31,7 +36,7 @@
               required
               class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Full Name"
-            >
+            />
           </div>
 
           <div>
@@ -45,7 +50,7 @@
               required
               class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Email address"
-            >
+            />
           </div>
 
           <div>
@@ -59,7 +64,9 @@
               <option value="reader">Reader</option>
               <option value="author">Author</option>
             </select>
-            <p class="mt-1 text-xs text-gray-500">Choose your role. Authors can create posts.</p>
+            <p class="mt-1 text-xs text-gray-500">
+              Choose your role. Authors can create posts.
+            </p>
           </div>
 
           <div>
@@ -73,11 +80,13 @@
               required
               class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Password"
-            >
+            />
           </div>
 
           <div>
-            <label for="password_confirmation" class="sr-only">Confirm Password</label>
+            <label for="password_confirmation" class="sr-only"
+              >Confirm Password</label
+            >
             <input
               id="password_confirmation"
               v-model="form.password_confirmation"
@@ -87,7 +96,7 @@
               required
               class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Confirm Password"
-            >
+            />
           </div>
         </div>
 
@@ -108,34 +117,34 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: 'guest',
-})
+  middleware: "guest",
+});
 
-const { register } = useAuth()
-const router = useRouter()
+const { register } = useAuth();
+const router = useRouter();
 
 const form = reactive({
-  name: '',
-  email: '',
-  password: '',
-  password_confirmation: '',
-  role: 'reader' as 'admin' | 'author' | 'reader',
-})
+  name: "",
+  email: "",
+  password: "",
+  password_confirmation: "",
+  role: "reader" as "admin" | "author" | "reader",
+});
 
-const loading = ref(false)
-const error = ref('')
+const loading = ref(false);
+const error = ref("");
 
 const handleRegister = async () => {
-  loading.value = true
-  error.value = ''
+  loading.value = true;
+  error.value = "";
 
   try {
-    await register(form)
-    router.push('/dashboard')
+    await register(form);
+    router.push("/dashboard");
   } catch (err: any) {
-    error.value = err.data?.message || 'Registration failed. Please try again.'
+    error.value = err.data?.message || "Registration failed. Please try again.";
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 </script>

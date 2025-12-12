@@ -1,5 +1,7 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div
+    class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
+  >
     <div class="max-w-md w-full space-y-8">
       <div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -7,7 +9,10 @@
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600">
           Or
-          <NuxtLink to="/register" class="font-medium text-indigo-600 hover:text-indigo-500">
+          <NuxtLink
+            to="/register"
+            class="font-medium text-indigo-600 hover:text-indigo-500"
+          >
             create a new account
           </NuxtLink>
         </p>
@@ -32,7 +37,7 @@
               required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Email address"
-            >
+            />
           </div>
           <div>
             <label for="password" class="sr-only">Password</label>
@@ -45,13 +50,16 @@
               required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Password"
-            >
+            />
           </div>
         </div>
 
         <div class="flex items-center justify-between">
           <div class="text-sm">
-            <NuxtLink to="/forgot-password" class="font-medium text-indigo-600 hover:text-indigo-500">
+            <NuxtLink
+              to="/forgot-password"
+              class="font-medium text-indigo-600 hover:text-indigo-500"
+            >
               Forgot your password?
             </NuxtLink>
           </div>
@@ -74,31 +82,31 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: 'guest',
-})
+  middleware: "guest",
+});
 
-const { login } = useAuth()
-const router = useRouter()
+const { login } = useAuth();
+const router = useRouter();
 
 const form = reactive({
-  email: '',
-  password: '',
-})
+  email: "",
+  password: "",
+});
 
-const loading = ref(false)
-const error = ref('')
+const loading = ref(false);
+const error = ref("");
 
 const handleLogin = async () => {
-  loading.value = true
-  error.value = ''
+  loading.value = true;
+  error.value = "";
 
   try {
-    await login(form)
-    router.push('/dashboard')
+    await login(form);
+    router.push("/dashboard");
   } catch (err: any) {
-    error.value = err.data?.message || 'Invalid credentials. Please try again.'
+    error.value = err.data?.message || "Invalid credentials. Please try again.";
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 </script>

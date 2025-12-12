@@ -1,10 +1,10 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
+  <div
+    class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500"
+  >
     <div class="flex flex-col items-center justify-center min-h-screen px-4">
       <div class="text-center">
-        <h1 class="text-6xl font-bold text-white mb-6">
-          Welcome to Blog App
-        </h1>
+        <h1 class="text-6xl font-bold text-white mb-6">Welcome to Blog App</h1>
         <p class="text-xl text-white mb-12">
           A modern blog platform with authentication, posts, comments, and more.
         </p>
@@ -33,21 +33,33 @@
           </NuxtLink>
         </div>
 
-        <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div
+          class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+        >
           <div class="bg-white bg-opacity-20 backdrop-blur-lg rounded-lg p-6">
             <div class="text-3xl mb-2">✍️</div>
             <h3 class="text-lg font-semibold text-white mb-2">Create Posts</h3>
-            <p class="text-white text-sm">Authors can write and publish blog posts</p>
+            <p class="text-white text-sm">
+              Authors can write and publish blog posts
+            </p>
           </div>
           <div class="bg-white bg-opacity-20 backdrop-blur-lg rounded-lg p-6">
             <div class="text-3xl mb-2">💬</div>
-            <h3 class="text-lg font-semibold text-white mb-2">Comment & Like</h3>
-            <p class="text-white text-sm">Engage with posts through comments and likes</p>
+            <h3 class="text-lg font-semibold text-white mb-2">
+              Comment & Like
+            </h3>
+            <p class="text-white text-sm">
+              Engage with posts through comments and likes
+            </p>
           </div>
           <div class="bg-white bg-opacity-20 backdrop-blur-lg rounded-lg p-6">
             <div class="text-3xl mb-2">✅</div>
-            <h3 class="text-lg font-semibold text-white mb-2">Admin Approval</h3>
-            <p class="text-white text-sm">Posts require admin approval before publishing</p>
+            <h3 class="text-lg font-semibold text-white mb-2">
+              Admin Approval
+            </h3>
+            <p class="text-white text-sm">
+              Posts require admin approval before publishing
+            </p>
           </div>
         </div>
       </div>
@@ -56,9 +68,9 @@
 </template>
 
 <script setup lang="ts">
-const { isAuthenticated, initAuth } = useAuth()
+const { isAuthenticated, initAuth } = useAuth();
 
 onMounted(() => {
-  initAuth()
-})
+  initAuth();
+});
 </script>

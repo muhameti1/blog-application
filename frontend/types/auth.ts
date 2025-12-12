@@ -1,14 +1,14 @@
 export interface User {
-  id: number
-  name: string
-  email: string
-  role: 'admin' | 'author' | 'reader'
-  email_verified_at: string | null
-  created_at: string
-  updated_at: string
+  id: number;
+  name: string;
+  email: string;
+  role: "admin" | "author" | "reader";
+  email_verified_at: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface AuthState {
-  user: User | null
-  token: string | null
+  user: User | null;
+  token: string | null;
 }

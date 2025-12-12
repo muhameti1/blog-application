@@ -34,28 +34,38 @@
             </div>
             <div class="bg-green-50 p-4 rounded-lg">
               <div class="text-sm text-green-600 font-medium">Role</div>
-              <div class="text-lg text-gray-900 capitalize">{{ user?.role }}</div>
+              <div class="text-lg text-gray-900 capitalize">
+                {{ user?.role }}
+              </div>
             </div>
             <div class="bg-purple-50 p-4 rounded-lg">
               <div class="text-sm text-purple-600 font-medium">Status</div>
               <div class="text-lg text-gray-900">
-                {{ user?.email_verified_at ? 'Verified' : 'Unverified' }}
+                {{ user?.email_verified_at ? "Verified" : "Unverified" }}
               </div>
             </div>
           </div>
 
           <div class="border-t pt-4">
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Permissions</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+              Permissions
+            </h3>
             <ul class="space-y-2">
               <li class="flex items-center">
-                <span :class="canCreatePosts ? 'text-green-500' : 'text-gray-400'" class="mr-2">
-                  {{ canCreatePosts ? '✓' : '✗' }}
+                <span
+                  :class="canCreatePosts ? 'text-green-500' : 'text-gray-400'"
+                  class="mr-2"
+                >
+                  {{ canCreatePosts ? "✓" : "✗" }}
                 </span>
                 <span>Can create posts</span>
               </li>
               <li class="flex items-center">
-                <span :class="isAdmin ? 'text-green-500' : 'text-gray-400'" class="mr-2">
-                  {{ isAdmin ? '✓' : '✗' }}
+                <span
+                  :class="isAdmin ? 'text-green-500' : 'text-gray-400'"
+                  class="mr-2"
+                >
+                  {{ isAdmin ? "✓" : "✗" }}
                 </span>
                 <span>Can approve posts</span>
               </li>
@@ -73,14 +83,14 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: 'auth',
-})
+  middleware: "auth",
+});
 
-const { user, logout, isAdmin, canCreatePosts } = useAuth()
-const router = useRouter()
+const { user, logout, isAdmin, canCreatePosts } = useAuth();
+const router = useRouter();
 
 const handleLogout = async () => {
-  await logout()
-  router.push('/login')
-}
+  await logout();
+  router.push("/login");
+};
 </script>
