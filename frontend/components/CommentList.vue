@@ -108,7 +108,10 @@ defineExpose({
       <p class="text-gray-500">Loading comments...</p>
     </div>
 
-    <div v-else-if="error" class="bg-red-50 border border-red-200 rounded-md p-4">
+    <div
+      v-else-if="error"
+      class="bg-red-50 border border-red-200 rounded-md p-4"
+    >
       <p class="text-sm text-red-600">{{ error }}</p>
     </div>
 
@@ -131,9 +134,10 @@ defineExpose({
               <span class="text-sm text-gray-500">{{
                 formatDate(comment.created_at)
               }}</span>
-
             </div>
-            <p class="text-gray-700 whitespace-pre-wrap">{{ comment.content }}</p>
+            <p class="text-gray-700 whitespace-pre-wrap">
+              {{ comment.content }}
+            </p>
 
             <div class="mt-4 flex items-center space-x-4 text-sm">
               <button
@@ -154,7 +158,10 @@ defineExpose({
             </div>
 
             <!-- Reply Form -->
-            <div v-if="replyingTo === comment.id" class="mt-4 ml-4 pl-4 border-l-2 border-gray-200">
+            <div
+              v-if="replyingTo === comment.id"
+              class="mt-4 ml-4 pl-4 border-l-2 border-gray-200"
+            >
               <textarea
                 v-model="replyContent"
                 rows="3"
@@ -195,9 +202,10 @@ defineExpose({
                   <span class="text-sm text-gray-500">{{
                     formatDate(reply.created_at)
                   }}</span>
-
                 </div>
-                <p class="text-gray-700 whitespace-pre-wrap">{{ reply.content }}</p>
+                <p class="text-gray-700 whitespace-pre-wrap">
+                  {{ reply.content }}
+                </p>
                 <div v-if="canEdit(reply)" class="mt-2">
                   <button
                     @click="handleDelete(reply.id)"

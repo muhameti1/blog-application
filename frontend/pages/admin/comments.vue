@@ -257,13 +257,17 @@ const rejectedComments = computed(() =>
                     :key="comment.id"
                     class="hover:bg-gray-50"
                   >
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                    >
                       {{ comment.user.name }}
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-700">
                       <div class="max-w-xs truncate">{{ comment.content }}</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    >
                       {{ comment.post?.title || "N/A" }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
@@ -274,7 +278,9 @@ const rejectedComments = computed(() =>
                         {{ comment.status }}
                       </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    >
                       {{ new Date(comment.created_at).toLocaleDateString() }}
                     </td>
                     <td

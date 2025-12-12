@@ -1,4 +1,8 @@
-import type { Comment, CreateCommentData, UpdateCommentData } from "~/types/comment";
+import type {
+  Comment,
+  CreateCommentData,
+  UpdateCommentData,
+} from "~/types/comment";
 
 export const useComments = () => {
   const config = useRuntimeConfig();
@@ -22,14 +26,11 @@ export const useComments = () => {
    * Create a new comment.
    */
   const createComment = async (data: CreateCommentData): Promise<Comment> => {
-    const response = await $fetch<{ comment: Comment }>(
-      `${baseURL}/comments`,
-      {
-        method: "POST",
-        body: data,
-        headers: getAuthHeaders(),
-      }
-    );
+    const response = await $fetch<{ comment: Comment }>(`${baseURL}/comments`, {
+      method: "POST",
+      body: data,
+      headers: getAuthHeaders(),
+    });
     return response.comment;
   };
 
