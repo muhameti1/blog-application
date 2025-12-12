@@ -74,6 +74,12 @@
 
         <div class="prose prose-lg max-w-none" v-html="post.content"></div>
       </article>
+
+      <!-- Comments Section -->
+      <div v-if="post" class="mt-8 space-y-6">
+        <CommentForm :post-id="post.id" @comment-added="handleCommentAdded" />
+        <CommentList ref="commentListRef" :post-id="post.id" />
+      </div>
     </div>
   </div>
 </template>
@@ -91,11 +97,18 @@ const loading = ref(true);
 const error = ref("");
 const deleting = ref(false);
 const approving = ref(false);
+const commentListRef = ref<any>(null);
 
 const canEdit = computed(() => {
   if (!user.value || !post.value) return false;
   return isAdmin.value || post.value.user?.id === user.value.id;
 });
+
+const handleCommentAdded = () => {
+  if (commentListRef.value) {
+    commentListRef.value.loadComments();
+  }
+};
 
 onMounted(async () => {
   // Initialize auth first to load token

@@ -9,14 +9,11 @@ class Comment extends Model
     protected $fillable = [
         'user_id',
         'post_id',
+        'parent_id',
         'content',
-        'status',
-        'approved_by',
-        'approved_at'
     ];
 
     protected $casts = [
-        'approved_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];
@@ -31,18 +28,18 @@ class Comment extends Model
         return $this->belongsTo(Post::class);
     }
 
-    public function approver()
+    public function parent()
     {
-        return $this->belongsTo(User::class, 'approved_by');
+        return $this->belongsTo(Comment::class, 'parent_id');
     }
 
-    public function scopeApproved($query)
+    public function replies()
     {
-        return $query->where('status', 'approved');
+        return $this->hasMany(Comment::class, 'parent_id');
     }
 
-    public function scopePending($query)
+    public function scopeTopLevel($query)
     {
-        return $query->where('status', 'pending');
+        return $query->whereNull('parent_id');
     }
 }

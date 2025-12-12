@@ -74,7 +74,7 @@
 import type { PostListItem } from "~/types/post";
 
 const { getPosts } = usePosts();
-const { canCreatePosts, initAuth } = useAuth();
+const { user, canCreatePosts, initAuth } = useAuth();
 
 const posts = ref<PostListItem[]>([]);
 const loading = ref(true);
