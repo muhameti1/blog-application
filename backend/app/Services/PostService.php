@@ -15,7 +15,8 @@ class PostService
     public function getAllPublishedPosts(): Collection
     {
         return Post::published()
-            ->with(['user', 'comments', 'likes'])
+            ->with(['user'])
+            ->withCount(['comments', 'likes'])
             ->orderBy('published_at', 'desc')
             ->get();
     }
@@ -26,7 +27,8 @@ class PostService
     public function getPostBySlug(string $slug): ?Post
     {
         return Post::where('slug', $slug)
-            ->with(['user', 'comments.user', 'likes'])
+            ->with(['user'])
+            ->withCount(['comments', 'likes'])
             ->first();
     }
 

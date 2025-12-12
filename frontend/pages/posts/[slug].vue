@@ -72,7 +72,15 @@
           </div>
         </header>
 
-        <div class="prose prose-lg max-w-none" v-html="post.content"></div>
+        <div class="prose prose-lg max-w-none mb-8" v-html="post.content"></div>
+
+        <!-- Like Button -->
+        <div class="border-t border-gray-200 pt-6 mb-6">
+          <LikeButton
+            :post-id="post.id"
+            :initial-count="post.likes_count || 0"
+          />
+        </div>
       </article>
 
       <!-- Comments Section -->
