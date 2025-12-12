@@ -117,6 +117,19 @@ export const usePosts = () => {
     return response.post;
   };
 
+  /**
+   * Get all posts (admin only).
+   */
+  const getAdminPosts = async (): Promise<PostListItem[]> => {
+    const response = await $fetch<{ posts: PostListItem[] }>(
+      `${baseURL}/admin/posts`,
+      {
+        headers: getAuthHeaders(),
+      }
+    );
+    return response.posts;
+  };
+
   return {
     getPosts,
     getPost,
@@ -126,5 +139,6 @@ export const usePosts = () => {
     getMyPosts,
     approvePost,
     rejectPost,
+    getAdminPosts,
   };
 };

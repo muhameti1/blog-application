@@ -49,7 +49,7 @@
 
           <div v-if="canEdit" class="flex space-x-2">
             <NuxtLink
-              :to="`/posts/${post.id}/edit`"
+              :to="`/posts/edit/${post.slug}`"
               class="inline-flex items-center px-3 py-1 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
             >
               Edit

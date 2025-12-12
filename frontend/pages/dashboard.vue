@@ -47,6 +47,41 @@
           </div>
 
           <div class="border-t pt-4">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">
+              Quick Actions
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <NuxtLink
+                to="/posts"
+                class="flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+              >
+                📝 View All Posts
+              </NuxtLink>
+              <NuxtLink
+                v-if="canCreatePosts"
+                to="/posts/create"
+                class="flex items-center justify-center px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+              >
+                ➕ Create New Post
+              </NuxtLink>
+              <NuxtLink
+                v-if="canCreatePosts"
+                to="/posts/my-posts"
+                class="flex items-center justify-center px-4 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition"
+              >
+                📋 My Posts
+              </NuxtLink>
+              <NuxtLink
+                v-if="isAdmin"
+                to="/admin/posts"
+                class="flex items-center justify-center px-4 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+              >
+                🛡️ Admin Dashboard
+              </NuxtLink>
+            </div>
+          </div>
+
+          <div class="border-t pt-4 mt-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-2">
               Permissions
             </h3>

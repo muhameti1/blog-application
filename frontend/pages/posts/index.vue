@@ -2,7 +2,16 @@
   <div class="min-h-screen bg-gray-50">
     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">Blog Posts</h1>
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Blog Posts</h1>
+          <NuxtLink
+            v-if="user"
+            to="/dashboard"
+            class="text-sm text-blue-600 hover:text-blue-800 mt-1 inline-block"
+          >
+            ← Back to Dashboard
+          </NuxtLink>
+        </div>
         <NuxtLink
           v-if="canCreatePosts"
           to="/posts/create"

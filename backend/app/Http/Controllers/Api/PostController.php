@@ -142,4 +142,18 @@ class PostController extends Controller
             'posts' => PostListResource::collection($posts),
         ]);
     }
+
+    /**
+     * Get all posts (admin only).
+     */
+    public function adminPosts(Request $request): JsonResponse
+    {
+        $this->authorize('viewAny', Post::class);
+
+        $posts = $this->postService->getAllPosts();
+
+        return response()->json([
+            'posts' => PostListResource::collection($posts),
+        ]);
+    }
 }
