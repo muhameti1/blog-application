@@ -5,10 +5,12 @@
 </template>
 
 <script setup lang="ts">
-const { initAuth } = useAuth()
+import { onMounted } from "vue";
+
+const { initAuth } = useAuth();
 
 // Initialize auth state on app mount
 onMounted(() => {
-  initAuth()
-})
+  initAuth();
+});
 </script>
