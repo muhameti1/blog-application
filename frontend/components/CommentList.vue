@@ -6,32 +6,26 @@ const props = defineProps<{
 }>();
 
 const { user, isAdmin } = useAuth();
-const { getPostComments, deleteComment, createComment } = useComments();
+const { getPostComments, deleteComment } = useComments();
 
-const comments = ref<Comment[]>([]);
-const loading = ref(true);
-const error = ref("");
 const deletingIds = ref<Set<number>>(new Set());
-const replyingTo = ref<number | null>(null);
-const replyContent = ref("");
-const submittingReply = ref(false);
-const editingId = ref<number | null>(null);
-const editContent = ref("");
+
+// Use real-time updates for comments
+const {
+  data: comments,
+  loading,
+  error,
+  refresh,
+} = useRealtime<Comment[]>(
+  async () => {
+    return await getPostComments(props.postId);
+  },
+  { interval: 8000 } // Update every 8 seconds
+);
 
 const loadComments = async () => {
-  loading.value = true;
-  try {
-    comments.value = await getPostComments(props.postId);
-  } catch (err: any) {
-    error.value = err.data?.message || "Failed to load comments";
-  } finally {
-    loading.value = false;
-  }
+  await refresh();
 };
-
-onMounted(() => {
-  loadComments();
-});
 
 const handleDelete = async (commentId: number) => {
   if (!confirm("Are you sure you want to delete this comment?")) return;
@@ -47,49 +41,28 @@ const handleDelete = async (commentId: number) => {
   }
 };
 
-const startReply = (commentId: number) => {
-  replyingTo.value = commentId;
-  replyContent.value = "";
-};
-
-const cancelReply = () => {
-  replyingTo.value = null;
-  replyContent.value = "";
-};
-
-const submitReply = async (parentId: number) => {
-  if (!replyContent.value.trim()) return;
-
-  submittingReply.value = true;
-  try {
-    await createComment({
-      post_id: props.postId,
-      parent_id: parentId,
-      content: replyContent.value,
-    });
-
-    replyingTo.value = null;
-    replyContent.value = "";
-    await loadComments();
-  } catch (err: any) {
-    alert(err.data?.message || "Failed to post reply");
-  } finally {
-    submittingReply.value = false;
-  }
-};
-
-const canEdit = (comment: Comment) => {
+const canDelete = (comment: Comment) => {
   if (!user.value) return false;
   return isAdmin.value || comment.user.id === user.value.id;
 };
 
 const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString("en-US", {
-    year: "numeric",
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays < 7) return `${diffDays}d ago`;
+
+  return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+    year: date.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
   });
 };
 
@@ -99,127 +72,118 @@ defineExpose({
 </script>
 
 <template>
-  <div class="space-y-6">
-    <h3 class="text-2xl font-bold text-gray-900">
-      Comments ({{ comments.length }})
-    </h3>
-
-    <div v-if="loading" class="text-center py-8">
-      <p class="text-gray-500">Loading comments...</p>
+  <div>
+    <div v-if="loading" class="text-center py-12">
+      <div
+        class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
+      ></div>
+      <p class="text-gray-500 mt-4 text-sm">Loading comments...</p>
     </div>
 
     <div
       v-else-if="error"
-      class="bg-red-50 border border-red-200 rounded-md p-4"
+      class="bg-red-50 border border-red-200 rounded-lg p-4"
     >
-      <p class="text-sm text-red-600">{{ error }}</p>
+      <p class="text-red-800 text-sm">{{ error }}</p>
     </div>
 
-    <div v-else-if="comments.length === 0" class="text-center py-8">
-      <p class="text-gray-500">No comments yet. Be the first to comment!</p>
+    <div
+      v-else-if="!comments || comments.length === 0"
+      class="bg-white border border-gray-200 rounded-xl p-12 text-center"
+    >
+      <svg
+        class="w-16 h-16 text-gray-300 mx-auto mb-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+        />
+      </svg>
+      <p class="text-gray-500 text-lg">No comments yet</p>
+      <p class="text-gray-400 text-sm mt-1">
+        Be the first to share your thoughts!
+      </p>
     </div>
 
     <div v-else class="space-y-4">
-      <div
+      <article
         v-for="comment in comments"
         :key="comment.id"
-        class="bg-white rounded-lg shadow p-6"
+        class="bg-white border border-gray-200 rounded-xl p-6 hover:border-gray-300 transition-colors"
       >
-        <div class="flex items-start justify-between">
-          <div class="flex-1">
-            <div class="flex items-center space-x-2 mb-2">
-              <span class="font-semibold text-gray-900">{{
-                comment.user.name
-              }}</span>
-              <span class="text-sm text-gray-500">{{
-                formatDate(comment.created_at)
-              }}</span>
-            </div>
-            <p class="text-gray-700 whitespace-pre-wrap">
-              {{ comment.content }}
-            </p>
+        <div class="flex items-start gap-3">
+          <div
+            class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-medium flex-shrink-0"
+          >
+            {{ comment.user.name?.charAt(0).toUpperCase() }}
+          </div>
 
-            <div class="mt-4 flex items-center space-x-4 text-sm">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="font-semibold text-gray-900">
+                  {{ comment.user.name }}
+                </span>
+                <span class="text-sm text-gray-500">
+                  {{ formatDate(comment.created_at) }}
+                </span>
+              </div>
+
               <button
-                v-if="user"
-                @click="startReply(comment.id)"
-                class="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                Reply
-              </button>
-              <button
-                v-if="canEdit(comment)"
+                v-if="canDelete(comment)"
                 @click="handleDelete(comment.id)"
                 :disabled="deletingIds.has(comment.id)"
-                class="text-red-600 hover:text-red-800 font-medium disabled:opacity-50"
+                class="text-gray-400 hover:text-red-600 transition-colors disabled:opacity-50 flex-shrink-0"
+                title="Delete comment"
               >
-                {{ deletingIds.has(comment.id) ? "Deleting..." : "Delete" }}
+                <svg
+                  v-if="deletingIds.has(comment.id)"
+                  class="animate-spin h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                <svg
+                  v-else
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
               </button>
             </div>
 
-            <!-- Reply Form -->
-            <div
-              v-if="replyingTo === comment.id"
-              class="mt-4 ml-4 pl-4 border-l-2 border-gray-200"
-            >
-              <textarea
-                v-model="replyContent"
-                rows="3"
-                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-4 py-2 border"
-                placeholder="Write your reply..."
-              ></textarea>
-              <div class="mt-2 flex justify-end space-x-2">
-                <button
-                  @click="cancelReply"
-                  class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
-                >
-                  Cancel
-                </button>
-                <button
-                  @click="submitReply(comment.id)"
-                  :disabled="submittingReply || !replyContent.trim()"
-                  class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
-                >
-                  {{ submittingReply ? "Posting..." : "Post Reply" }}
-                </button>
-              </div>
-            </div>
-
-            <!-- Replies -->
-            <div
-              v-if="comment.replies && comment.replies.length > 0"
-              class="mt-4 ml-8 space-y-4"
-            >
-              <div
-                v-for="reply in comment.replies"
-                :key="reply.id"
-                class="bg-gray-50 rounded-lg p-4 border-l-2 border-blue-200"
-              >
-                <div class="flex items-center space-x-2 mb-2">
-                  <span class="font-semibold text-gray-900">{{
-                    reply.user.name
-                  }}</span>
-                  <span class="text-sm text-gray-500">{{
-                    formatDate(reply.created_at)
-                  }}</span>
-                </div>
-                <p class="text-gray-700 whitespace-pre-wrap">
-                  {{ reply.content }}
-                </p>
-                <div v-if="canEdit(reply)" class="mt-2">
-                  <button
-                    @click="handleDelete(reply.id)"
-                    :disabled="deletingIds.has(reply.id)"
-                    class="text-sm text-red-600 hover:text-red-800 font-medium disabled:opacity-50"
-                  >
-                    {{ deletingIds.has(reply.id) ? "Deleting..." : "Delete" }}
-                  </button>
-                </div>
-              </div>
-            </div>
+            <p class="text-gray-700 whitespace-pre-wrap leading-relaxed">
+              {{ comment.content }}
+            </p>
           </div>
         </div>
-      </div>
+      </article>
     </div>
   </div>
 </template>

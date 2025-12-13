@@ -1,19 +1,27 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <div class="bg-white rounded-lg shadow-lg p-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-8">Create New Post</h1>
+  <div>
+    <AppHeader />
 
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Create New Post</h1>
+        <p class="text-gray-600">Share your thoughts with the community</p>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-xl p-8">
         <form @submit.prevent="handleSubmit">
-          <div v-if="error" class="mb-6 bg-red-50 p-4 rounded-md">
-            <p class="text-red-800">{{ error }}</p>
+          <div
+            v-if="error"
+            class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4"
+          >
+            <p class="text-red-800 text-sm">{{ error }}</p>
           </div>
 
           <div class="space-y-6">
             <div>
               <label
                 for="title"
-                class="block text-sm font-medium text-gray-700"
+                class="block text-sm font-medium text-gray-900 mb-2"
               >
                 Title *
               </label>
@@ -22,80 +30,114 @@
                 v-model="form.title"
                 type="text"
                 required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 border"
-                placeholder="Enter post title"
+                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 px-4 py-2.5 border transition-colors"
+                placeholder="Enter a captivating title"
               />
             </div>
 
             <div>
               <label
                 for="excerpt"
-                class="block text-sm font-medium text-gray-700"
+                class="block text-sm font-medium text-gray-900 mb-2"
               >
-                Excerpt (optional)
+                Excerpt
               </label>
               <textarea
                 id="excerpt"
                 v-model="form.excerpt"
-                rows="2"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 border"
-                placeholder="Brief description of your post"
+                rows="3"
+                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 px-4 py-2.5 border transition-colors"
+                placeholder="Brief description of your post (will be auto-generated if left empty)"
               ></textarea>
+              <p class="mt-1 text-xs text-gray-500">
+                Optional - A short summary that appears in post listings
+              </p>
             </div>
 
             <div>
               <label
                 for="content"
-                class="block text-sm font-medium text-gray-700"
+                class="block text-sm font-medium text-gray-900 mb-2"
               >
                 Content *
               </label>
               <textarea
                 id="content"
                 v-model="form.content"
-                rows="15"
+                rows="16"
                 required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 border"
-                placeholder="Write your post content here..."
+                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 px-4 py-2.5 border transition-colors font-mono text-sm"
+                placeholder="Write your post content here... (supports HTML)"
               ></textarea>
+              <p class="mt-1 text-xs text-gray-500">
+                You can use HTML tags for formatting
+              </p>
             </div>
 
             <div>
               <label
                 for="status"
-                class="block text-sm font-medium text-gray-700"
+                class="block text-sm font-medium text-gray-900 mb-2"
               >
-                Status
+                Publish Status
               </label>
               <select
                 id="status"
                 v-model="form.status"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 border"
+                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 px-4 py-2.5 border transition-colors"
               >
-                <option value="pending">Pending (submit for approval)</option>
-                <option value="draft">Draft (save for later)</option>
+                <option value="pending">Submit for Review</option>
+                <option value="draft">Save as Draft</option>
               </select>
+              <p class="mt-1 text-xs text-gray-500">
+                <span v-if="form.status === 'pending'"
+                  >Your post will be submitted for admin approval</span
+                >
+                <span v-else>Save as draft to continue editing later</span>
+              </p>
             </div>
           </div>
 
-          <div class="mt-8 flex justify-end space-x-4">
+          <div class="mt-8 flex flex-col sm:flex-row justify-end gap-3">
             <NuxtLink
               to="/posts"
-              class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              class="inline-flex items-center justify-center px-6 py-2.5 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors"
             >
               Cancel
             </NuxtLink>
             <button
               type="submit"
               :disabled="loading"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
+              class="inline-flex items-center justify-center px-6 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
+              <svg
+                v-if="loading"
+                class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
               {{ loading ? "Creating..." : "Create Post" }}
             </button>
           </div>
         </form>
       </div>
     </div>
+
+    <AppFooter />
   </div>
 </template>
 

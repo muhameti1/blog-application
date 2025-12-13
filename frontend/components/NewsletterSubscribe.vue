@@ -1,51 +1,92 @@
 <template>
-  <div class="bg-indigo-600 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center">
-        <h2 class="text-3xl font-bold text-white mb-4">
-          Subscribe to our Newsletter
-        </h2>
-        <p class="text-indigo-100 mb-8 max-w-2xl mx-auto">
-          Get notified when new blog posts are published. No spam, unsubscribe
-          anytime.
-        </p>
-
-        <form @submit.prevent="handleSubscribe" class="max-w-md mx-auto">
-          <div class="flex gap-2">
-            <input
-              v-model="email"
-              type="email"
-              placeholder="Enter your email"
-              required
-              class="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300"
-              :disabled="loading"
-            />
-            <button
-              type="submit"
-              :disabled="loading"
-              class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-indigo-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {{ loading ? "Subscribing..." : "Subscribe" }}
-            </button>
-          </div>
-
-          <!-- Success Message -->
-          <div
-            v-if="successMessage"
-            class="mt-4 p-3 bg-green-100 text-green-800 rounded-lg text-sm"
-          >
-            {{ successMessage }}
-          </div>
-
-          <!-- Error Message -->
-          <div
-            v-if="errorMessage"
-            class="mt-4 p-3 bg-red-100 text-red-800 rounded-lg text-sm"
-          >
-            {{ errorMessage }}
-          </div>
-        </form>
+  <div class="bg-white border border-gray-200 rounded-xl p-8">
+    <div class="max-w-2xl mx-auto text-center">
+      <div
+        class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"
+      >
+        <svg
+          class="w-8 h-8 text-primary-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+          />
+        </svg>
       </div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-3">
+        Subscribe to Newsletter
+      </h2>
+      <p class="text-gray-600 mb-6">
+        Get notified when new blog posts are published. No spam, unsubscribe
+        anytime.
+      </p>
+
+      <form @submit.prevent="handleSubscribe" class="max-w-md mx-auto">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input
+            v-model="email"
+            type="email"
+            placeholder="Enter your email address"
+            required
+            class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+            :disabled="loading"
+          />
+          <button
+            type="submit"
+            :disabled="loading"
+            class="bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+          >
+            {{ loading ? "Subscribing..." : "Subscribe" }}
+          </button>
+        </div>
+
+        <!-- Success Message -->
+        <div
+          v-if="successMessage"
+          class="mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-lg text-sm flex items-center gap-2"
+        >
+          <svg
+            class="w-5 h-5 flex-shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          {{ successMessage }}
+        </div>
+
+        <!-- Error Message -->
+        <div
+          v-if="errorMessage"
+          class="mt-4 p-3 bg-red-50 border border-red-200 text-red-800 rounded-lg text-sm flex items-center gap-2"
+        >
+          <svg
+            class="w-5 h-5 flex-shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          {{ errorMessage }}
+        </div>
+      </form>
     </div>
   </div>
 </template>
