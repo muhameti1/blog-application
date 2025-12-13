@@ -70,6 +70,9 @@
         </div>
       </div>
     </div>
+
+    <!-- Newsletter Subscription Section -->
+    <NewsletterSubscribe />
   </div>
 </template>
 

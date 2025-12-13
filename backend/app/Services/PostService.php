@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\SendPostNotificationJob;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -90,10 +91,10 @@ class PostService
 
         $post->save();
 
-        // TODO: Dispatch newsletter job if approved
-        // if ($post->isApproved()) {
-        //     SendPostNotificationJob::dispatch($post);
-        // }
+        // Dispatch newsletter job if approved
+        if ($post->isApproved()) {
+            SendPostNotificationJob::dispatch($post);
+        }
 
         return $post->load(['user', 'approver']);
     }
@@ -141,8 +142,8 @@ class PostService
         $post->published_at = $post->published_at ?? now();
         $post->save();
 
-        // TODO: Dispatch newsletter job
-        // SendPostNotificationJob::dispatch($post);
+        // Dispatch newsletter job
+        SendPostNotificationJob::dispatch($post);
 
         return $post->load(['user', 'approver']);
     }
