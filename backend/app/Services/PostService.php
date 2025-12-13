@@ -104,11 +104,8 @@ class PostService
      */
     public function updatePost(Post $post, array $data, User $user): Post
     {
-        // If title changed, regenerate slug
-        if (isset($data['title']) && $data['title'] !== $post->title) {
-            $post->slug = $this->generateUniqueSlug($data['title'], $post->id);
-        }
-
+        // Do NOT regenerate slug - slugs should be permanent to avoid breaking links
+        // Only update content and metadata
         $post->title = $data['title'] ?? $post->title;
         $post->content = $data['content'] ?? $post->content;
         $post->excerpt = $data['excerpt'] ?? Str::limit(strip_tags($data['content'] ?? $post->content), 150);
